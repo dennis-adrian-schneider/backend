@@ -21,6 +21,7 @@ const (
 
 func CheckID(requestID string) string {
 	var authLevel string
+	authLevel = "Error"
 	Database.DB.Raw("select auth_level from auths where id = ?", requestID).Scan(&authLevel)
 	log.Printf("AuthLevel of %s is %s\n", requestID, authLevel)
 

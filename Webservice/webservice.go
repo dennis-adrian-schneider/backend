@@ -28,7 +28,7 @@ func checkID(path string) {
 			fmt.Fprintf(writer, Auth.HIGH)
 			log.Printf("Sent response for id %s, auth level %s\n", id, Auth.HIGH)
 		default:
-			fmt.Fprintf(writer, "ID %s not valid", id)
+			fmt.Fprintf(writer, "ID %s invalid", id)
 		}
 	})
 }
