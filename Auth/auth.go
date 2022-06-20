@@ -9,7 +9,7 @@ import (
 type Auth struct {
 	gorm.Model
 	ID        string
-	authLevel AuthLevel
+	AuthLevel AuthLevel
 }
 type AuthLevel string
 
@@ -19,9 +19,20 @@ const (
 	HIGH   = "HIGH"
 )
 
-func CheckID(requestID string) AuthLevel {
-	var level AuthLevel
-	Database.DB.Select("authLevel").Where(&level, "ID = ?", requestID)
-	log.Printf("AuthLevel of %s is %s\n", requestID, level)
-	return level
+func CheckID(requestID string) string {
+	var authLevel string
+	Database.DB.Raw("select auth_level from auths where id = ?", requestID).Scan(&authLevel)
+	log.Printf("AuthLevel of %s is %s\n", requestID, authLevel)
+
+	return authLevel
+}
+func AddID(requestID string, authLevel string) {
+	Database.DB.AutoMigrate(&Auth{})
+	var auth Auth
+	auth.ID = requestID
+	auth.AuthLevel = AuthLevel(authLevel)
+
+	Database.DB.Create(&auth)
+
+	log.Printf("Created User %s with AuthLevel %s\n", requestID, authLevel)
 }

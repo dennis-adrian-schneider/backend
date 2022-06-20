@@ -7,7 +7,13 @@ import (
 	"sv_backend/Auth"
 )
 
-func Run(path string) {
+func Init() {
+	checkID("/check-id/")
+	http.ListenAndServe("localhost:8080", nil)
+
+}
+
+func checkID(path string) {
 	http.HandleFunc(path, func(writer http.ResponseWriter, request *http.Request) {
 		id := request.RequestURI[len(path):]
 		log.Println("Requested auth for ID " + id)
@@ -25,5 +31,4 @@ func Run(path string) {
 			fmt.Fprintf(writer, "ID %s not valid", id)
 		}
 	})
-	http.ListenAndServe("localhost:8080", nil)
 }

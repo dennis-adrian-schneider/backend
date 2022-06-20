@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-	sub := "/check-id/"
 	Database.Init()
-	Webservice.Run(sub)
+	Webservice.Init()
 }
