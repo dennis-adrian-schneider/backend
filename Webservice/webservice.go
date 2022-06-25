@@ -4,12 +4,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"regexp"
 	"sv_backend/Auth"
 )
 
 func Init() {
 	checkID("/check-id/")
-	http.ListenAndServe("localhost:4500", nil)
+
+	if len(os.Args) > 1 {
+		_, err := regexp.MatchString("^\\d*$", os.Args[1])
+		if err != nil {
+			log.Println("Line Argument One failed. Check Port Settings")
+			panic("Line Argument One failed. Check Port Settings")
+		}
+		http.ListenAndServe(":"+os.Args[1], nil)
+	} else {
+		http.ListenAndServe(":4500", nil)
+		log.Println("Webservice started on port 4500")
+	}
 
 }
 
