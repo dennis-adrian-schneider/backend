@@ -1,7 +1,7 @@
 FROM golang:1.18.3-alpine
 RUN apk add build-base
+RUN mkdir /app
+ADD . /app
 WORKDIR /app
-COPY . .
-RUN go build -o /go-backend
-EXPOSE 4500
-CMD [ "/go-backend" ]
+RUN go build -o main .
+CMD ["/app/main"]
